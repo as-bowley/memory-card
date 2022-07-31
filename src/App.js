@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import Scoreboard from "./components/Scoreboard";
+import Loading from "./components/Loading";
 import CharacterCard from "./components/CharacterCard";
 import uniqid from "uniqid";
 import data from "./components/data";
@@ -9,29 +10,37 @@ import data from "./components/data";
 function App() {
   const [apiData, setApiData] = useState(data.data);
   const [characters, setCharacters] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState();
   const [highScore, setHighScore] = useState(0);
   const [clicked, setClicked] = useState([]);
   const [displayedCharacters, setDisplayedCharacters] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     createCharacterList();
-    setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    setDisplayedCharacters([]);
-    if (characters.length > 0) {
-      const newRandomIndexes = randomNumbers();
-      newRandomIndexes.map((num) => {
-        return setDisplayedCharacters((prevDisplayedCharacters) => [
-          characters[num],
-          ...prevDisplayedCharacters,
-        ]);
-      });
-    }
+    createNewDisplayCharacters();
   }, [score]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+      setScore(0);
+    }, 1500);
+  }, []);
+
+  const createNewDisplayCharacters = () => {
+    setDisplayedCharacters([]);
+    const newRandomIndexes = randomNumbers();
+    newRandomIndexes.map((num) => {
+      return setDisplayedCharacters((prevDisplayedCharacters) => [
+        characters[num],
+        ...prevDisplayedCharacters,
+      ]);
+    });
+  };
 
   const randomNumbers = () => {
     let array = [];
@@ -53,6 +62,7 @@ function App() {
       };
       return setCharacters((prevCharacters) => [newChar, ...prevCharacters]);
     });
+    createNewDisplayCharacters();
   };
 
   const handleClick = (e) => {
@@ -68,24 +78,27 @@ function App() {
     }
   };
 
-  const characterCards = displayedCharacters.map((char) => {
-    return (
-      <CharacterCard
-        src={char.image}
-        alt={char.name}
-        onClick={handleClick}
-        id={char.id}
-        key={char.id}
-      />
-    );
-  });
-
   return (
     <div>
       <Header />
       <Scoreboard score={score} highScore={highScore} />
       <div className="demo-grid">
-        {characterCards.length > 0 ? characterCards : "Loading..."}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          displayedCharacters.map((char) => {
+            return (
+              <CharacterCard
+                src={char?.image}
+                alt={char?.name}
+                onClick={handleClick}
+                id={char?.id}
+                key={char?.id}
+                name={char?.name}
+              />
+            );
+          })
+        )}
       </div>
     </div>
   );

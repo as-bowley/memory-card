@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400;500;600;700&display=swap");
+
 body {
   background: linear-gradient(0deg, rgba(6, 5, 5, 0.677), rgba(7, 6, 7, 0.736)),
     url("./components/img/bg.jpeg");
@@ -15,12 +17,35 @@ body {
   background-color: rgba(0, 0, 0, 0.632);
   padding: 20px;
   margin: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading {
+  grid-column-start: 3;
+  align-self: center;
+  display: flex;
+  justify-content: center;
+}
+
+.loading > img {
+  width: 100px;
 }
 
 .characterCard {
-  border: 2px solid white;
+  border: 4px solid white;
   border-radius: 2px;
   cursor: pointer;
+  width: 225px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.charName {
+  color: white;
+  font-family: "Cormorant SC", Arial, Helvetica, sans-serif;
+  border-top: 1px solid rgba(255, 255, 255, 0.549);
 }
 
 .characterCard:hover {

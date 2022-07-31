@@ -1,13 +1,10 @@
 import React from "react";
 
-export default function CharacterCard({ src, alt, id, onClick }) {
+export default function CharacterCard({ src, alt, id, onClick, name }) {
   return (
-    <img
-      src={src}
-      alt={alt}
-      onClick={onClick}
-      id={id}
-      className="characterCard"
-    />
+    <div className="characterCard">
+      <img src={src} alt={alt} onClick={onClick} id={id} />
+      <h4 className="charName">{name}</h4>
+    </div>
   );
 }
